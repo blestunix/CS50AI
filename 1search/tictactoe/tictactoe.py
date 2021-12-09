@@ -49,7 +49,7 @@ def result(board, action):
     try:
         i, j = action
     except ValueError:
-        raise Exception("None ")
+        raise Exception("None")
     board[i][j] = player(board)
     return board
 
@@ -95,11 +95,25 @@ def utility(board):
     elif is_won == O:
         return -1
     else:
-        return None
+        return 0
 
 
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """ 
-    raise NotImplementedError
+    def max_value(board):
+        if terminal(board):
+            return utility(board)
+        v = float('-inf')
+        for action in actions(board):
+            v = max(v, min_value(result(board, action)))
+        return v
+    
+    def min_value(board):
+        if terminal(board):
+            return utility(board)
+        v = float('inf')
+        for action in actions(board):
+            v = min(v, max_value(result(board, action)))
+        return v
