@@ -116,15 +116,16 @@ def minimax(board):
     if player(board) == X:      # MAXIMIZE
         ans = []
         for action in actions(board):
-            ans.append((action, min_value(result(board, action))))
+            ans.append((action, min_value(result(board, action), -math.inf, math.inf)))
         return max(ans, key=lambda item:item[1])[0]
     else:                       # MINIMIZE
         ans = []
         for action in actions(board):
-            ans.append((action, max_value(result(board, action))))
+            ans.append((action, max_value(result(board, action), -math.inf, math.inf)))
         return min(ans, key=lambda item:item[1])[0]
 
-def max_value(board):
+# alpha: max & beta: min
+def max_value(board, alpha, beta):
     #   function MAX-VALUE(state):
     #       if TERMINAL(state):
     #           return UTILITY(state)
@@ -136,10 +137,14 @@ def max_value(board):
         return utility(board)
     v = -math.inf
     for action in actions(board):
-        v = max(v, min_value(result(board, action)))
+        v = max(v, min_value(result(board, action), alpha, beta))
+        # alpha-beta pruning
+        alpha = max(alpha, v)
+        if alpha >= beta:
+            break
     return v
 
-def min_value(board):
+def min_value(board, alpha, beta):
     #   function MAX-VALUE(state):
     #       if TERMINAL(state):
     #           return UTILITY(state)
@@ -151,5 +156,9 @@ def min_value(board):
         return utility(board)
     v = math.inf
     for action in actions(board):
-        v = min(v, max_value(result(board, action)))
+        v = min(v, max_value(result(board, action), alpha, beta))
+        # alpha-beta pruning
+        beta = min(beta, v)
+        if alpha >= beta:
+            break
     return v
