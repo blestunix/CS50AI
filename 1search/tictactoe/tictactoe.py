@@ -1,5 +1,6 @@
 """
 Tic Tac Toe Player
+https://cs50.harvard.edu/ai/2020/projects/0/tictactoe/
 """
 
 import math
@@ -18,6 +19,9 @@ def initial_state():
             [EMPTY, EMPTY, EMPTY]]
 
 def count(player, board):
+    """
+    Return the count of player in a grid
+    """
     return sum(row.count(player) for row in board)
 
 
@@ -25,7 +29,6 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    # print("\tPlayer", board, end="\n\t")
     if count(X, board) > count(O, board):
         return O
     else:
@@ -36,7 +39,6 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
-    # print("Actions", board)
     possible = set()
     for i in range(len(board)):         # or simply len(3)
         for j in range(len(board[i])):  # agian simply range(3)
@@ -49,7 +51,6 @@ def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    # print("Result", board)
     if action not in actions(board):
         raise ValueError
     i, j = action
@@ -63,8 +64,6 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    # print("Winner", board)
-
     # Check rows
     for i in range(3):
         if all(player == board[i][0] for player in board[i]):
@@ -89,7 +88,6 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    # print("terminal", board)
     return count(EMPTY, board) == 0 or winner(board) != None
 
 
@@ -97,7 +95,6 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
-    # print("Utility", board)
     is_won = winner(board)
     if is_won == X:
         return 1
@@ -111,6 +108,11 @@ def minimax(board):
     """
     Returns the optimal action for the current player on the board.
     """
+    #   • Given a state s:
+    #       • MAX picks action a in ACTIONS(s) that produces highest value of MIN-VALUE(RESULT(s, a))
+    #       • MIN picks action a in ACTIONS(s) that produces smallest value of MAX-VALUE(RESULT(s, a))
+    if terminal(board):
+        return None
     if player(board) == X:      # MAXIMIZE
         ans = []
         for action in actions(board):
@@ -123,6 +125,13 @@ def minimax(board):
         return min(ans, key=lambda item:item[1])[0]
 
 def max_value(board):
+    #   function MAX-VALUE(state):
+    #       if TERMINAL(state):
+    #           return UTILITY(state)
+    #       v = -∞
+    #       for action in ACTIONS(state):
+    #           v = MAX(v, MIN-VALUE(RESULT(state, action)))
+    #       return v
     if terminal(board):
         return utility(board)
     v = -math.inf
@@ -131,6 +140,13 @@ def max_value(board):
     return v
 
 def min_value(board):
+    #   function MAX-VALUE(state):
+    #       if TERMINAL(state):
+    #           return UTILITY(state)
+    #       v = +∞
+    #       for action in ACTIONS(state):
+    #           v = MIN(v, MAX-VALUE(RESULT(state, action)))
+    #       return v
     if terminal(board):
         return utility(board)
     v = math.inf
