@@ -20,10 +20,12 @@ def initial_state():
 def count(player, board):
     return sum(row.count(player) for row in board)
 
+
 def player(board):
     """
     Returns player who has the next turn on a board.
     """
+    # print("\tPlayer", board, end="\n\t")
     if count(X, board) > count(O, board):
         return O
     else:
@@ -34,6 +36,7 @@ def actions(board):
     """
     Returns set of all possible actions (i, j) available on the board.
     """
+    # print("Actions", board)
     possible = set()
     for i in range(len(board)):         # or simply len(3)
         for j in range(len(board[i])):  # agian simply range(3)
@@ -41,40 +44,44 @@ def actions(board):
                 possible.add((i, j))
     return possible
 
-
+from copy import deepcopy
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
     """
-    try:
-        i, j = action
-    except ValueError:
-        raise Exception("None")
-    board[i][j] = player(board)
-    return board
+    # print("Result", board)
+    if action not in actions(board):
+        raise ValueError
+    i, j = action
+    board_cpy = deepcopy(board)
+    board_cpy[i][j] = player(board)
+    
+    return board_cpy
 
 
 def winner(board):
     """
     Returns the winner of the game, if there is one.
-    """ 
-    for player in [X, O]:
-        # Check rows
-        for i in range(3):
-            if board[i][0] == player and board[i][1] == player and board[i][2] == player:
-                return player
-        
-        # Check columns
-        for j in range(3):
-            if board[0][j] == player and board[1][j] == player and board[2][j] == player:
-                return player
+    """
+    # print("Winner", board)
 
-        # Check diagonals
-        if board[0][0] == player and board[1][1] == player and board[2][2] == player:
-            return player
+    # Check rows
+    for i in range(3):
+        if all(player == board[i][0] for player in board[i]):
+            return board[i][0]
+    
+    # Check columns
+    for i in range(3):
+        if board[0][i] == board[1][i] == board[2][i]:
+            return board[0][i]
 
-        if board[0][2] == player and board[1][1] == player and board[2][0] == player:
-            return player
+    # Check diagonals
+    if board[0][0] == board[1][1] == board[2][2]:
+        return board[0][0]
+
+    if board[0][2] == board[1][1] == board[2][0]:
+        return board[0][2]
+
     return None
 
 
@@ -82,6 +89,7 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
+    # print("terminal", board)
     return count(EMPTY, board) == 0 or winner(board) != None
 
 
@@ -89,6 +97,7 @@ def utility(board):
     """
     Returns 1 if X has won the game, -1 if O has won, 0 otherwise.
     """
+    # print("Utility", board)
     is_won = winner(board)
     if is_won == X:
         return 1
@@ -101,19 +110,30 @@ def utility(board):
 def minimax(board):
     """
     Returns the optimal action for the current player on the board.
-    """ 
-    def max_value(board):
-        if terminal(board):
-            return utility(board)
-        v = float('-inf')
+    """
+    if player(board) == X:      # MAXIMIZE
+        ans = []
         for action in actions(board):
-            v = max(v, min_value(result(board, action)))
-        return v
-    
-    def min_value(board):
-        if terminal(board):
-            return utility(board)
-        v = float('inf')
+            ans.append((action, min_value(result(board, action))))
+        return max(ans, key=lambda item:item[1])[0]
+    else:                       # MINIMIZE
+        ans = []
         for action in actions(board):
-            v = min(v, max_value(result(board, action)))
-        return v
+            ans.append((action, max_value(result(board, action))))
+        return min(ans, key=lambda item:item[1])[0]
+
+def max_value(board):
+    if terminal(board):
+        return utility(board)
+    v = -math.inf
+    for action in actions(board):
+        v = max(v, min_value(result(board, action)))
+    return v
+
+def min_value(board):
+    if terminal(board):
+        return utility(board)
+    v = math.inf
+    for action in actions(board):
+        v = min(v, max_value(result(board, action)))
+    return v
