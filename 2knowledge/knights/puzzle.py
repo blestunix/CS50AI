@@ -16,6 +16,7 @@ CKnave = Symbol("C is a Knave")
 knowledge0 = And(
     # Can be either a Knight or a Knave; but not both
     Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+
     # A claims to be knight and knave both; so with a perpective that A is a Knight!; speaking the truth
     Biconditional(AKnight, And(AKnight, AKnave))    # AKnight <=> (AKnight ∧ AKnave)
 )
@@ -28,15 +29,24 @@ knowledge1 = And(
     Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
     # B can be either a Knight or a Knave; but not both
     Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+
     # A says that "I'm a knave and so is B"; so with a perspective that A is a knight; speaking the truth
-    Biconditional(AKnight, And(AKnave, BKnave))
+    Biconditional(AKnight, And(AKnave, BKnave)) # Anight <=> (AKnave ∧ BKnave)
 )
 
 # Puzzle 2
 # A says "We are the same kind."
 # B says "We are of different kinds."
 knowledge2 = And(
-    # TODO
+    # A can be either a Knight or a Knave; but not both
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    # B can be either a Knight or a Knave; but not both
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+
+    # A says "We are the same kind." So, with a perpective that A is a Knight; speaking the truth
+    Biconditional(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))), # AKnight <=> ((AKnight ∧ BKnight) ∨ (AKnave ∧ BKnave))
+    # B says "We are of different kinds." So, with a perpective that B is a Knight; speaking the truth
+    Biconditional(BKnight, Or(And(AKnight, BKnave), And(AKnave, BKnight)))  # BKnight <=> ((AKnight ∧ BKnave)) V (AKnave ∧ BKnight)
 )
 
 # Puzzle 3
