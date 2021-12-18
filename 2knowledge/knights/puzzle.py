@@ -9,10 +9,15 @@ BKnave = Symbol("B is a Knave")
 CKnight = Symbol("C is a Knight")
 CKnave = Symbol("C is a Knave")
 
+# A knight is always honest (i.e. speaks the truth) whereas the knave is always dishonest (i.e. always lies!)
+
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # TODO
+    # Can be either a Knight or a Knave; but not both
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    # A claims to be knight and knave both
+    Biconditional(AKnight, And(AKnight, AKnave))    # AKnight <=> (AKnight ∧ AKnave)
 )
 
 # Puzzle 1
