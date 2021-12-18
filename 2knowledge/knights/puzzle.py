@@ -16,7 +16,7 @@ CKnave = Symbol("C is a Knave")
 knowledge0 = And(
     # Can be either a Knight or a Knave; but not both
     Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
-    # A claims to be knight and knave both
+    # A claims to be knight and knave both; so with a perpective that A is a Knight!; speaking the truth
     Biconditional(AKnight, And(AKnight, AKnave))    # AKnight <=> (AKnight ∧ AKnave)
 )
 
@@ -24,7 +24,12 @@ knowledge0 = And(
 # A says "We are both knaves."
 # B says nothing.
 knowledge1 = And(
-    # TODO
+    # A can be either a Knight or a Knave; but not both
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    # B can be either a Knight or a Knave; but not both
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+    # A says that "I'm a knave and so is B"; so with a perspective that A is a knight; speaking the truth
+    Biconditional(AKnight, And(AKnave, BKnave))
 )
 
 # Puzzle 2
