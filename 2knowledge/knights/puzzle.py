@@ -14,7 +14,7 @@ CKnave = Symbol("C is a Knave")
 # Puzzle 0
 # A says "I am both a knight and a knave."
 knowledge0 = And(
-    # Can be either a Knight or a Knave; but not both
+    # A can be either a Knight or a Knave; but not both
     Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
 
     # A claims to be knight and knave both; so with a perpective that A is a Knight!; speaking the truth
@@ -55,7 +55,19 @@ knowledge2 = And(
 # B says "C is a knave."
 # C says "A is a knight."
 knowledge3 = And(
-    # TODO
+    # A can be either a Knight or a Knave; but not both
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    # B can be either a Knight or a Knave; but not both
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+    # C can be either a Knight or a Knave; but not both
+    Or(CKnight, CKnave), Not(And(CKnight, CKnave)), # (CKnight ∨ CKnave) ∧ ¬(CKnight ∧ CKnave)
+
+    # A says either "I am a knight." or "I am a knave."; so pretending a is a night(is saying the truth)
+    Biconditional(AKnight, Or(AKnight, AKnave)),
+    # B says "C is a knave."; so pretending b is a knight(is saying the truth)
+    Biconditional(BKnight, CKnave),
+    # C says "A is a knight." so pretending c is speaking the truth(i.e. is a knight)
+    Biconditional(CKnight, AKnight)
 )
 
 
