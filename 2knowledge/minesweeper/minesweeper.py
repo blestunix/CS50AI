@@ -202,17 +202,15 @@ class MinesweeperAI():
         # 3
         self.knowledge.append(Sentence(self.neighbours(cell), count))
         # 4
-        for knowledge in self.knowledge:
-            if knowledge.count == 0:
-                for cell in knowledge.cells.copy():
+        for sentence in self.knowledge:
+            if sentence.count == 0:
+                for cell in sentence.cells.copy():
                     self.mark_safe(cell)
                     
         # Remove information that is now effectively empty to reduce overhead in later scenarios
-        self.knowledge = [knowledge for knowledge in self.knowledge if len(knowledge.cells) != 0]
+        self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
         # 5
-        self.knowledge += self.inference()
-        print(self.mines)
-        
+        self.knowledge += self.inference()        
 
     def make_safe_move(self):
         """
@@ -245,7 +243,11 @@ class MinesweeperAI():
             return None # No moves available
         return random.choice(available_moves)
 
+    # All of the below are helper functions
     def neighbours(self, cell):
+        """
+        Returns the possible neighbouring cells of the input cell
+        """
         neighbouring_cells = set()
         i, j = cell
         for r in range(i - 1, i + 2):
@@ -257,6 +259,9 @@ class MinesweeperAI():
         return neighbouring_cells
 
     def inference(self):
+        """
+        Return new conclusions based on the knowledge, by finding new rules.
+        """
         new_rules = []
         for knowledge_i in self.knowledge:
             for knowledge_j in self.knowledge:
@@ -266,5 +271,4 @@ class MinesweeperAI():
                     new_rule = Sentence(knowledge_i.cells.difference(knowledge_j.cells), knowledge_i.count - knowledge_j.count)
                     if new_rule not in self.knowledge:
                         new_rules.append(new_rule)
-
         return new_rules
