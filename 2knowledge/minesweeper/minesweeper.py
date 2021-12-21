@@ -232,11 +232,14 @@ class MinesweeperAI():
             1) have not already been chosen, and
             2) are not known to be mines
         """
-        while True:
-            random_cell = random.randint(0, self.height - 1), random.randint(0, self.width - 1)
-            if random_cell not in self.moves_made and random_cell not in self.mines:
-                break
-        return random_cell
+        available_moves = []
+        for i in range(self.height):
+            for j in range(self.width):
+                if (i, j) not in self.moves_made and (i, j) not in self.mines:
+                    available_moves.append((i, j))
+        if len(available_moves) == 0:
+            return None
+        return random.choice(available_moves)
 
     def neighbours(self, cell):
         neighbouring_cells = set()
