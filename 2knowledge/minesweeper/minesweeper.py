@@ -210,7 +210,13 @@ class MinesweeperAI():
         # Remove information that is now effectively empty to reduce overhead in later scenarios
         self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
         # 5
-        self.knowledge += self.inference()        
+        self.knowledge += self.inference()
+
+        # Mark mines
+        for sentence in self.knowledge:
+            if len(sentence.cells) == sentence.count:
+                for cell in sentence.cells.copy():
+                    self.mark_mine(cell)
 
     def make_safe_move(self):
         """
