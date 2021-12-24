@@ -212,7 +212,7 @@ class MinesweeperAI():
         self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
         # 5
         self.knowledge += self.inference()
-
+        
         # Mark mines
         for sentence in self.knowledge:
             for cell in sentence.cells.copy():
@@ -270,12 +270,12 @@ class MinesweeperAI():
         Return new conclusions based on the knowledge, by finding new rules.
         """
         new_rules = []
-        for knowledge_i in self.knowledge:
-            for knowledge_j in self.knowledge:
-                if knowledge_j == knowledge_i:
+        for sentence1 in self.knowledge:
+            for sentence2 in self.knowledge:
+                if sentence2 == sentence1:
                     continue    # to avoid checking for same set
-                if knowledge_j.cells.issubset(knowledge_i.cells):
-                    new_rule = Sentence(knowledge_i.cells.difference(knowledge_j.cells), knowledge_i.count - knowledge_j.count)
+                if sentence2.cells.issubset(sentence1.cells):
+                    new_rule = Sentence(sentence1.cells.difference(sentence2.cells), sentence1.count - sentence2.count)
                     if new_rule not in self.knowledge:
                         new_rules.append(new_rule)
 
