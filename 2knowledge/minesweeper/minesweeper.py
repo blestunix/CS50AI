@@ -201,7 +201,17 @@ class MinesweeperAI():
         # 2
         self.mark_safe(cell)
         # 3
-        self.knowledge.append(Sentence(self.neighbours(cell), count))
+        neighbours = self.neighbours(cell)  # neighbouring cells that are yet to be explored
+        # reduce the count by 1 if a neighbouring cell is known to be a mine
+        for cell in neighbours:
+            if cell in self.mines:
+                count -= 1
+    
+        # form the sentence and append it to the knowledge base
+        self.knowledge.append(Sentence(neighbours, count))
+        # remove information that is now effectively empty to reduce overhead in later scenarios
+        self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
+
         # 4
         for sentence in self.knowledge:
             for cell in sentence.known_safes().copy():
@@ -209,12 +219,8 @@ class MinesweeperAI():
             for cell in sentence.known_mines().copy():
                 self.mark_mine(cell)
 
-        # Remove information that is now effectively empty to reduce overhead in later scenarios
-        self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
-        # 5
+       # 5
         self.knowledge += self.inference()
-
-
 
     def make_safe_move(self):
         """
@@ -258,7 +264,7 @@ class MinesweeperAI():
             for c in range(j - 1, j + 2):
                 if (r < 0 or c < 0) or (r >= self.height or c >= self.width) or (r, c) == cell:
                     continue
-                else:
+                elif (r, c) not in self.moves_made:
                     neighbouring_cells.add((r, c))
         return neighbouring_cells
 
@@ -272,8 +278,7 @@ class MinesweeperAI():
                 if sentence2 == sentence1:
                     continue    # to avoid checking for same set
                 if sentence2.cells.issubset(sentence1.cells):
-                    new_rule = Sentence(sentence1.cells- sentence2.cells, sentence1.count - sentence2.count)
+                    new_rule = Sentence(sentence1.cells - sentence2.cells, sentence1.count - sentence2.count)
                     if new_rule not in self.knowledge:
                         new_rules.append(new_rule)
-
         return new_rules
