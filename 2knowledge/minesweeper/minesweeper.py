@@ -207,17 +207,15 @@ class MinesweeperAI():
             for cell in sentence.cells.copy():
                 if cell in sentence.known_safes():
                     self.mark_safe(cell)
-                    
+                if cell in sentence.known_mines():
+                    self.mark_mine(cell)
+
         # Remove information that is now effectively empty to reduce overhead in later scenarios
         self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
         # 5
         self.knowledge += self.inference()
-        
-        # Mark mines
-        for sentence in self.knowledge:
-            for cell in sentence.cells.copy():
-                if cell in sentence.known_mines():
-                    self.mark_mine(cell)
+
+
 
     def make_safe_move(self):
         """
@@ -275,7 +273,7 @@ class MinesweeperAI():
                 if sentence2 == sentence1:
                     continue    # to avoid checking for same set
                 if sentence2.cells.issubset(sentence1.cells):
-                    new_rule = Sentence(sentence1.cells.difference(sentence2.cells), sentence1.count - sentence2.count)
+                    new_rule = Sentence(sentence1.cells- sentence2.cells, sentence1.count - sentence2.count)
                     if new_rule not in self.knowledge:
                         new_rules.append(new_rule)
 
