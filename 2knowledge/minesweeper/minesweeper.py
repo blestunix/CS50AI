@@ -204,11 +204,10 @@ class MinesweeperAI():
         self.knowledge.append(Sentence(self.neighbours(cell), count))
         # 4
         for sentence in self.knowledge:
-            for cell in sentence.cells.copy():
-                if cell in sentence.known_safes():
-                    self.mark_safe(cell)
-                if cell in sentence.known_mines():
-                    self.mark_mine(cell)
+            for cell in sentence.known_safes().copy():
+                self.mark_safe(cell)
+            for cell in sentence.known_mines().copy():
+                self.mark_mine(cell)
 
         # Remove information that is now effectively empty to reduce overhead in later scenarios
         self.knowledge = [sentence for sentence in self.knowledge if len(sentence.cells) != 0]
