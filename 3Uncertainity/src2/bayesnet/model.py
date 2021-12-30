@@ -1,4 +1,8 @@
-from pomegranate import *
+from pomegranate import Node, DiscreteDistribution, ConditionalProbabilityTable, BayesianNetwork
+#   Node: 
+#   DiscreteDistribution: 
+#   ConditionalProbabilityTable:
+#   BayesianNetwork:    
 
 # Rain node has no parents
 rain = Node(DiscreteDistribution({
