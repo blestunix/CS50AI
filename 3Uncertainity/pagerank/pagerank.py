@@ -105,10 +105,30 @@ def sample_pagerank(corpus, damping_factor, n):
     Return a dictionary where keys are page names, and values are
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
+
+    Parameters:
+        • The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
+        • The `damping_factor` is a floating point number representing the damping factor to be used by the transition model.
+        • `n` is an integer representing the number of samples that should be generated to estimate PageRank values. (n >= 1)
     """
-    t = transition_model(corpus, "3.html", DAMPING)
-    print(t, sum(t.values()))
-    raise NotImplementedError
+    pagerank = {page: 0 for page in corpus} # dictionary to store the estimated pagerank of each page
+    sample = random.choice(list(corpus.keys())) # first page
+
+    for _ in range(n):
+        pagerank[sample] += 1
+        model = transition_model(corpus, sample, damping_factor)
+        # random.choices() has an argument- `weight` which will infulence the outcome based on the value(higher get more chances)
+        # random.choices returns list of length equal to the length of the given sequence; so we define k=1 to get only one item
+        sample = random.choices(list(model.keys()), weights=list(model.values()), k=1)[0]   # We get a list of unit length so to get the item only use 0 index
+    
+    for page in pagerank:
+        pagerank[page] /= n
+
+    # Check: print(sum(pagerank.values()))
+    return pagerank
+
+
+
 
 
 def iterate_pagerank(corpus, damping_factor):
