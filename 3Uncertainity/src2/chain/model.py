@@ -1,4 +1,4 @@
-from pomegranate import *
+from pomegranate import DiscreteDistribution, ConditionalProbabilityTable, MarkovChain
 
 # Define starting probabilities
 start = DiscreteDistribution({

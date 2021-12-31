@@ -14,7 +14,7 @@ def generate_sample():
 
     # Loop over all states, assuming topological order
     for state in model.states:
-
+        
         # If we have a non-root node, sample conditional on parents
         if isinstance(state.distribution, pomegranate.ConditionalProbabilityTable):
             sample[state.name] = state.distribution.sample(parent_values=parents)
@@ -38,4 +38,3 @@ for i in range(N):
     if sample["train"] == "delayed":
         data.append(sample["appointment"])
 print(Counter(data))
-

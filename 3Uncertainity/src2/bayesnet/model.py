@@ -1,8 +1,4 @@
 from pomegranate import Node, DiscreteDistribution, ConditionalProbabilityTable, BayesianNetwork
-#   Node: 
-#   DiscreteDistribution: 
-#   ConditionalProbabilityTable:
-#   BayesianNetwork:    
 
 # Rain node has no parents
 rain = Node(DiscreteDistribution({
@@ -48,7 +44,7 @@ appointment = Node(ConditionalProbabilityTable([
 # Create a Bayesian Network and add states
 model = BayesianNetwork()
 model.add_states(rain, maintenance, train, appointment)
-
+print(model)
 # Add edges connecting nodes
 model.add_edge(rain, maintenance)
 model.add_edge(rain, train)
