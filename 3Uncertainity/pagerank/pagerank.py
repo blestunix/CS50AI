@@ -69,9 +69,9 @@ def transition_model(corpus, page, damping_factor):
     a link at random chosen from all pages in the corpus.
 
     Parameters:
-        • The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
-        • The `page` is a string representing which page the random surfer is currently on. e.g. "1.html"
-        • The `damping_factor` is a floating point number representing the damping factor to be used when generating
+        - The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
+        - The `page` is a string representing which page the random surfer is currently on. e.g. "1.html"
+        - The `damping_factor` is a floating point number representing the damping factor to be used when generating
             the probabilities.
     """
     probability = dict()
@@ -107,9 +107,9 @@ def sample_pagerank(corpus, damping_factor, n):
     PageRank values should sum to 1.
 
     Parameters:
-        • The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
-        • The `damping_factor` is a floating point number representing the damping factor to be used by the transition model.
-        • `n` is an integer representing the number of samples that should be generated to estimate PageRank values. (n >= 1)
+        - The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
+        - The `damping_factor` is a floating point number representing the damping factor to be used by the transition model.
+        - `n` is an integer representing the number of samples that should be generated to estimate PageRank values. (n >= 1)
     """
     pagerank = {page: 0 for page in corpus} # dictionary to store the estimated pagerank of each page
     sample = random.choice(list(corpus.keys())) # first page
@@ -120,16 +120,12 @@ def sample_pagerank(corpus, damping_factor, n):
         # random.choices() has an argument- `weight` which will infulence the outcome based on the value(higher get more chances)
         # random.choices returns list of length equal to the length of the given sequence; so we define k=1 to get only one item
         sample = random.choices(list(model.keys()), weights=list(model.values()), k=1)[0]   # We get a list of unit length so to get the item only use 0 index
-    
+
     for page in pagerank:
         pagerank[page] /= n
 
     # Check: print(sum(pagerank.values()))
     return pagerank
-
-
-
-
 
 def iterate_pagerank(corpus, damping_factor):
     """
@@ -139,8 +135,51 @@ def iterate_pagerank(corpus, damping_factor):
     Return a dictionary where keys are page names, and values are
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
+
+    Parameters:
+        - The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
+        - The `damping_factor` is a floating point number representing the damping factor to be used in the PageRank formula.
     """
-    raise NotImplementedError
+    # required variables
+    n = len(corpus)
+    pagerank = {page: 1 / n for page in corpus}
+    prev_pagerank = pagerank.copy()
+
+    # first codition: split probability of choosing a page evenly
+    alpha = (100 - damping_factor * 100) / (n * 100)
+
+    # second condition
+    def summation(page):
+        # get the number of links present on `page`
+        num_links = lambda page: len(corpus[page])
+        result = 0
+        for i in corpus:
+            # ith page has a link to the given page
+            if page in corpus[i]:
+                result += pagerank[i] / num_links(i)
+            # A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+            if not corpus[i]:
+                result += pagerank[i] / n
+        return result
+
+    # Final formula: PR(page)
+    pr = lambda page: alpha + damping_factor * summation(page)
+
+    # Loop over
+    diff = 1    # Any value greater than 0.001 will do; used to store the difference in value occured during the iteration
+
+    while diff > 0.001:
+
+        # Iterate over the pages in the corpus; and apply the formula on each page
+        for page in corpus:
+            pagerank[page] = pr(page)
+        
+        # Get the difference maximum difference caused in the new iteration
+        diff = max([abs(prev_val - val) for (prev_val, val) in zip(prev_pagerank.values(), pagerank.values())])
+        # Make the current pagerank table as the previous one
+        prev_pagerank = pagerank.copy()
+    
+    return pagerank
 
 
 if __name__ == "__main__":
