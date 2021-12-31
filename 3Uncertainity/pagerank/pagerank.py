@@ -2,7 +2,6 @@ import os
 import random
 import re
 import sys
-from decimal import Decimal
 
 DAMPING = 0.85  # represents the damping factor(d); set to initially to 0.85
 SAMPLES = 10000 # represents the number of samples used to estimate PageRank using the sampling method; set initially to 10000
@@ -179,6 +178,7 @@ def iterate_pagerank(corpus, damping_factor):
         # Make the current pagerank table as the previous one
         prev_pagerank = pagerank.copy()
     
+    # Check: print(sum(pagerank.values()))
     return pagerank
 
 
