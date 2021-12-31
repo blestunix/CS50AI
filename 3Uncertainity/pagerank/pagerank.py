@@ -2,12 +2,23 @@ import os
 import random
 import re
 import sys
+from decimal import Decimal
 
-DAMPING = 0.85
-SAMPLES = 10000
+DAMPING = 0.85  # represents the damping factor(d); set to initially to 0.85
+SAMPLES = 10000 # represents the number of samples used to estimate PageRank using the sampling method; set initially to 10000
 
 
 def main():
+    """
+    This function calls a helper function in `crawl`: parses all of the HTML files in the directory,
+                                                        and returns a dictionary representing the corpus
+    The function then calls for two functions (the output of these two functions should be similar when given the same corpus!):
+        1. `sample_pagerank()`   :  Used to estimeate the PageRank of each page by sampling.
+        2. `iterative_pagerank()`:  Used to calculate the PageRank of each page by using iterative formula method
+        **  Output method of the above functions returns a dictionary where the keys are each page name and the values 
+            are each page's estimated PageRank (a number between 0 and 1).
+    
+    """
     if len(sys.argv) != 2:
         sys.exit("Usage: python pagerank.py corpus")
     corpus = crawl(sys.argv[1])
@@ -56,8 +67,34 @@ def transition_model(corpus, page, damping_factor):
     With probability `damping_factor`, choose a link at random
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
+
+    Parameters:
+        • The `corpus` is a Python dictionary mapping a page name to a set of all pages linked to by that page.
+        • The `page` is a string representing which page the random surfer is currently on. e.g. "1.html"
+        • The `damping_factor` is a floating point number representing the damping factor to be used when generating
+            the probabilities.
     """
-    raise NotImplementedError
+    probability = dict()
+    # In case if the page has links to no other pages
+    if corpus[page] is None:
+        for current_page in corpus: # iterate over all the keys in the corpus dictionary
+            probability[current_page] = 1 / len(corpus[page])
+        return probability
+
+    # Else if the page is pointing to other pages
+    for current_page in corpus: # iterate over all the keys in the corpus dictionary
+
+        # Every page will have some change which is given by: (1 - damping_factor) / len(corpus)
+        # trying to overcome the issues aand limitations of floating-point arithmetic; by using integer arithmetic instead
+        probability[current_page] = (100 - damping_factor * 100) / (len(corpus) * 100)
+
+        # If curret_page is linked to the given page (`page`); then add it's chances of being the next one  
+        if current_page in corpus[page]:
+            # again to eradicate the floating-point arithmetic issue
+            # could instead use: probability[current_page] += damping_factor / len(corpus[page])
+            probability[current_page] = ((probability[current_page] * 100) + (damping_factor * 100) / len(corpus[page])) / 100
+       
+    return probability
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -69,6 +106,8 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
+    t = transition_model(corpus, "3.html", DAMPING)
+    print(t, sum(t.values()))
     raise NotImplementedError
 
 
