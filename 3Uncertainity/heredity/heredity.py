@@ -152,26 +152,36 @@ def joint_probability(people, one_gene, two_genes, have_trait):
     # Probability of `person` haven 2, 1 or 0 genes
     gene_count = lambda person: 1 if  person in one_gene else 2 if person in two_genes else 0
 
-    probability = 0
+    # return the passing probability
+    #  Gene count(`val`)    |     Passing probability       
+    #           0           |       PROBS["mutation"]    (since parent has no gene to pass; only mutation can help)
+    #           1           |       0.5                  (give that; if only one gene is found in parent; it's chance of being passed is 50%)
+    #           2           |       1 - PROBS["mutaion"] (Parent has gene to pass but it can be mutated to something else)
+    #   The below lambda function outputs the r.h.s given the l.h.s
+    passing_probability = lambda val: abs(val / 2 - PROBS["mutation"]) if val % 2 == 0 else 0.5  
+
+    # multiplicative identity
+    probability = 1
+
     for (person, info) in zip(people.keys(), people.values()):
         genes = gene_count(person)
     
         # Check if a `person` has parents not listed in the `info` dictionary
         if info["mother"] is None and info["father"] is None:
-            probability = PROBS["gene"][genes]
+            probability *= PROBS["gene"][genes]
         # Parents are indeed listed
         else:
-            mother = abs(gene_count(info["mother"]) / 2 - PROBS["mutation"])
-            father = abs(gene_count(info["father"]) / 2 - PROBS["mutation"])
+            mother = passing_probability(gene_count(info["mother"]))
+            father = passing_probability(gene_count(info["father"]))
             if genes == 2:
                 # The person got 2 genes i.e. 1 from each parent i.e. A.B
-                probability = mother * father
+                probability *= mother * father
             elif genes == 1:
-                # The person got 1 genes; either from mother of from father i.e. A.~B + B.~A 
-                probability = mother * (1 - father) + father * (1 - mother)
+                # The person got 1 genes; either from mother of from father i.e. A.¬B + B.¬A 
+                probability *= mother * (1 - father) + father * (1 - mother)
             else:
-                # The person has no such gene i.e. none from any of the parent; mathematically: ~A.~B
-                probability = (1 - mother) * (1 - father)
+                # The person has no such gene i.e. none from any of the parent; mathematically: ¬A.¬B
+                probability *= (1 - mother) * (1 - father)
         
         # Get the state of the 'person' of having the trait
         has_trait = person in have_trait
