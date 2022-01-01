@@ -187,8 +187,26 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
     Each person should have their "gene" and "trait" distributions updated.
     Which value for each distribution is updated depends on whether
     the person is in `have_gene` and `have_trait`, respectively.
+    
+    Parameter:
+        - `probabilities` is a dictionary of people as described in the “Understanding” section. 
+           Each person is mapped to a "gene" distribution and a "trait" distribution.
+        - `one_gene` is a set of people with one copy of the gene in the current joint distribution.
+        - `two_genes` is a set of people with two copies of the gene in the current joint distribution.
+        - `have_trait` is a set of people with the trait in the current joint distribution.
+        - `p` is the probability of the joint distribution.
     """
-    raise NotImplementedError
+     # Probability of `person` haven 2, 1 or 0 genes
+    gene_count = lambda person: 1 if  person in one_gene else 2 if person in two_genes else 0
+
+    for person in probabilities:
+        # update the probabilities[person]["gene"] distribution by adding p to the corresponding gene
+        genes = gene_count(person)
+        probabilities[person]["gene"][genes] += p
+        
+        # update the probabilities[person]["trait"] distribution by adding p to the corresponding trait state
+        trait = person in have_trait
+        probabilities[person]["trait"][trait] += p
 
 
 def normalize(probabilities):
