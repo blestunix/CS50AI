@@ -149,8 +149,15 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         - `have_trait` is a set of all people for whom we want to compute the probability that they have the trait.
         
     """
-    for (person, value) in zip(people.keys(), people.values()):
+    print(people)
+    for (person, info) in zip(people.keys(), people.values()):
 
+        # Check if a `person` has parents mentioned in the `info` dictionary
+        if info['mother'] is None and info['father'] is None:
+            print(f"{person} has no parents")
+        else:
+            print(f"{person} has parents")
+        
         # Probability of `person` haven 2, 1 or 0 genes
         if person in two_genes:
             print(f"probability such that {person} has two genes")
