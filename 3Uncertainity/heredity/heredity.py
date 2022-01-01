@@ -43,7 +43,7 @@ def main():
     if len(sys.argv) != 2:
         sys.exit("Usage: python heredity.py data.csv")
     people = load_data(sys.argv[1])
-
+    
     # Keep track of gene and trait probabilities for each person
     probabilities = {
         person: {
@@ -138,7 +138,33 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone not in `one_gene` or `two_gene` does not have the gene, and
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
+    
+    Parameters:
+        - `people` is a dictionary of people as described in the “Understanding” section. The keys represent names, 
+          and the values are dictionaries that contain mother and father keys. You may assume that either mother
+          and father are both blank (no parental information in the data set), or mother and father will both refer
+          to other people in the people dictionary.
+        - `one_gene` is a set of all people for whom we want to compute the probability that they have one copy of the gene.
+        - `two_genes` is a set of all people for whom we want to compute the probability that they have two copies of the gene.
+        - `have_trait` is a set of all people for whom we want to compute the probability that they have the trait.
+        
     """
+    for (person, value) in zip(people.keys(), people.values()):
+
+        # Probability of `person` haven 2, 1 or 0 genes
+        if person in two_genes:
+            print(f"probability such that {person} has two genes")
+        elif person in one_gene:
+            print(f"probability such that {person} has one gene")
+        else:
+            print(f"probability such that {person} has 0 genes")
+    
+        # Probability of the 'person' having or not having the trait
+        if person in have_trait:
+            print(f"probability of {person} exhibiting the trait")
+        else:
+            print(f"probability of {person} not exhibiting the trait")
+        
     raise NotImplementedError
 
 
