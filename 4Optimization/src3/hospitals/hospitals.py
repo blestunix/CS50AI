@@ -38,7 +38,7 @@ class Space():
 
         # Start by initializing hospitals randomly
         self.hospitals = set()
-        for i in range(self.num_hospitals):
+        for _ in range(self.num_hospitals):
             self.hospitals.add(random.choice(list(self.available_spaces())))
         if log:
             print("Initial state: cost", self.get_cost(self.hospitals))
@@ -197,3 +197,4 @@ for i in range(15):
 
 # Use local search to determine hospital placement
 hospitals = s.hill_climb(image_prefix="hospitals", log=True)
+#Random restart: hospitals = s.random_restart(20, image_prefix="hospitals", log=True)

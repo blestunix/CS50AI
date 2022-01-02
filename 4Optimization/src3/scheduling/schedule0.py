@@ -30,11 +30,11 @@ def backtrack(assignment):
     for value in ["Monday", "Tuesday", "Wednesday"]:
         new_assignment = assignment.copy()
         new_assignment[var] = value
-        if consistent(new_assignment):
+        if consistent(new_assignment):  # Makes sure that the new assignment is consistent
             result = backtrack(new_assignment)
-            if result is not None:
+            if result is not None: # Not a failure
                 return result
-    return None
+    return None # Every values was tried on; yet nothing worked; i.e. no solution
 
 
 def select_unassigned_variable(assignment):

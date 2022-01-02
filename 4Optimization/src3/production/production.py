@@ -1,11 +1,11 @@
 import scipy.optimize
 
-# Objective Function: 50x_1 + 80x_2
-# Constraint 1: 5x_1 + 2x_2 <= 20
-# Constraint 2: -10x_1 + -12x_2 <= -90
+# Objective Function: 50x₁ + 80x₂
+# Constraint 1: 5x₁ + 2x₂ ≤ 20
+# Constraint 2: -10x₁ + -12x₂ ≤ -90
 
 result = scipy.optimize.linprog(
-    [50, 80],  # Cost function: 50x_1 + 80x_2
+    [50, 80],  # Cost function: 50x₁ + 80x₂
     A_ub=[[5, 2], [-10, -12]],  # Coefficients for inequalities
     b_ub=[20, -90],  # Constraints for inequalities: 20 and -90
 )
