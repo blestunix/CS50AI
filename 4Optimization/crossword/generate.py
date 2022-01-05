@@ -129,7 +129,7 @@ class CrosswordCreator():
         while queue:
             (x, y) = queue.pop(0)
             if self.revise(x, y):
-                if len(self.domain[x]) == 0:
+                if len(self.domains[x]) == 0:
                     return False
                 for z in list(set(self.crossword.neighbors(x)) - set(self.domains[y])):
                     queue.append((z, x))
