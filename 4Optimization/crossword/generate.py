@@ -156,7 +156,23 @@ class CrosswordCreator():
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
-        raise NotImplementedError
+        # 1. all values are distinct
+        if len(set(assignment)) != len(assignment):
+            return False
+
+        # 2. every value is the correct length
+        if any(var.length != len(assignment[var]) for var in assignment):
+            return False
+
+        # 3. there are no conflicts between neighboring variables
+        for var in assignment:
+            for neighbor in self.crossword.neighbors(var):
+                if neighbor in assignment:
+                    i, j = self.crossword.overlaps[var, neighbor]
+                    if assignment[var][i] != assignment[neighbor][j]:
+                        return False
+
+        return True
 
     def order_domain_values(self, var, assignment):
         """
@@ -210,7 +226,14 @@ class CrosswordCreator():
         # Try a new variable
         var = self.select_unassigned_variable(assignment)
         for value in self.order_domain_values(var, assignment):
-            pass
+            new_assignment = assignment.copy()
+            new_assignment[var] = value
+            if self.consistent(new_assignment):  # Makes sure that the new assignment is consistent
+                result = self.backtrack(new_assignment)
+                if result is not None: # Not a failure
+                    return result
+                    
+        return None # Every values was tried on; yet nothing worked; i.e. no solution
 
 
 def main():
