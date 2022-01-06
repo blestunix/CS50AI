@@ -117,10 +117,11 @@ class CrosswordCreator():
         i, j = self.crossword.overlaps[x, y]
         for word_x in self.domains[x].copy():
             for word_y in self.domains[y]:
-                if word_x[i] != word_y[j]:
-                    self.domains[x].remove(word_x)
-                    revised = True
+                if word_x[i] == word_y[j]:  # constraint that the same square shared by overlapping
                     break
+            else:  # executed if no word satisfied the constraint (i.e break statement was not executed)
+                self.domains[x].remove(word_x) 
+                revised = True
         return revised
 
     def ac3(self, arcs=None):
@@ -185,8 +186,7 @@ class CrosswordCreator():
         fewest = min(unassigned_vars.items(),       # sort the unassigned_vars dictionary
                 key=lambda item: len(item[1]) and not  # based on lesser domain length
                                  len(self.crossword.neighbors(item[0]))) # and higher no of neighbors
-        
-        return fewest        
+        return fewest[0]
  
     def backtrack(self, assignment):
         """
@@ -200,9 +200,11 @@ class CrosswordCreator():
         # Check if assignment is complete
         if self.assignment_complete(assignment):
             return assignment
+
         # Try a new variable
         var = self.select_unassigned_variable(assignment)
         print(var)
+        
 
 
 def main():
