@@ -174,8 +174,20 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        raise NotImplementedError
+        # Get a dictionary of elements that are unassigned i.e.
+        # variables which are in `self.domains` but not in `assignment`
+        unassigned_vars = {}
+        for var in self.crossword.variables - set(assignment):
+            unassigned_vars[var] = self.domains[var]
 
+        # Get the variable with the fewest number of remaining values in its domain.    
+        # On tie, choosing among those variables having the largest degree (has the most neighbors)
+        fewest = min(unassigned_vars.items(),       # sort the unassigned_vars dictionary
+                key=lambda item: len(item[1]) and not  # based on lesser domain length
+                                 len(self.crossword.neighbors(item[0]))) # and higher no of neighbors
+        
+        return fewest        
+ 
     def backtrack(self, assignment):
         """
         Using Backtracking Search, take as input a partial assignment for the
@@ -188,6 +200,9 @@ class CrosswordCreator():
         # Check if assignment is complete
         if self.assignment_complete(assignment):
             return assignment
+        # Try a new variable
+        var = self.select_unassigned_variable(assignment)
+        print(var)
 
 
 def main():
