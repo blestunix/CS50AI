@@ -135,6 +135,7 @@ class CrosswordCreator():
         """
         # there exists an arc between a variable and it's neighboring variables
         queue = arcs if arcs is not None else [(x, y) for x in self.crossword.variables for y in self.crossword.neighbors(x)]
+        #print(queue)
         while queue:
             (x, y) = queue.pop(0)
             if self.revise(x, y):
@@ -225,11 +226,15 @@ class CrosswordCreator():
 
         # Try a new variable
         var = self.select_unassigned_variable(assignment)
+        arcs = [(neighbor, var) for neighbor in self.crossword.neighbors(var) if not neighbor in assignment]
         for value in self.order_domain_values(var, assignment):
             new_assignment = assignment.copy()
             new_assignment[var] = value
             # Makes sure that the new assignment is consistent and also apply inferences
-            if self.consistent(new_assignment):
+            if self.consistent(new_assignment) and self.ac3(arcs):
+                for unassigned_var in list(set(self.crossword.variables) - set(new_assignment)):
+                    if len(self.domains[unassigned_var]) == 1:
+                        new_assignment[unassigned_var] = self.domains[unassigned_var][0]
                 result = self.backtrack(new_assignment)
                 if result is not None: # Not a failure
                     return result
