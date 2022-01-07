@@ -187,7 +187,7 @@ class CrosswordCreator():
             for neighbor in self.crossword.neighbors(var) - set(assignment):
                 if value in self.domains[neighbor]:
                     values[value] += 1
-        return values
+        return sorted(values, key=values.get)
 
     def select_unassigned_variable(self, assignment):
         """
@@ -228,11 +228,12 @@ class CrosswordCreator():
         for value in self.order_domain_values(var, assignment):
             new_assignment = assignment.copy()
             new_assignment[var] = value
-            if self.consistent(new_assignment):  # Makes sure that the new assignment is consistent
+            # Makes sure that the new assignment is consistent and also apply inferences
+            if self.consistent(new_assignment):
                 result = self.backtrack(new_assignment)
                 if result is not None: # Not a failure
                     return result
-                    
+    
         return None # Every values was tried on; yet nothing worked; i.e. no solution
 
 
