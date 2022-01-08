@@ -60,7 +60,7 @@ def load_data(filename):
     is 1 if Revenue is true, and 0 otherwise.
     """
     with open(filename) as f:
-        reader = csv.reader(f)
+        reader = csv.DictReader(f)
         next(reader)
 
         month_num = {"Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "June": 5, 
@@ -70,28 +70,27 @@ def load_data(filename):
         labels = []
         for row in reader:
             evidence.append([
-                row[0],                 # Administrative
-                float(row[1]),          # Administrative_Duration
-                row[2],                 # Informational
-                float(row[3]),          # Informational_Duration
-                row[4],                 # ProductRelated
-                float(row[5]),          # ProductRelated_Duration
-                float(row[6]),          # BounceRates
-                float(row[7]),          # ExitRates
-                float(row[8]),          # PageValues
-                float(row[9]),          # SpecialDay
-                month_num[row[10]],     # Month
-                row[11],                # OperatingSystems
-                row[12],                # Browsers
-                row[13],                # Region
-                row[14],                # TrafficType
-                1 if row[15] == "Returning_Visitor" else 0, # VisitorType
-                0 if row[16] == "FALSE" else 1              # Weekend
+                row["Administrative"],
+                float(row["Administrative_Duration"]),
+                row["Informational"],
+                float(row["Informational_Duration"]),
+                row["ProductRelated"],
+                float(row["ProductRelated_Duration"]),
+                float(row["BounceRates"]),
+                float(row["ExitRates"]),
+                float(row["PageValues"]),
+                float(row["SpecialDay"]),
+                month_num[row["Month"]],
+                row["OperatingSystems"],
+                row["Browser"],
+                row["Region"],
+                row["TrafficType"],
+                1 if row["VisitorType"] == "Returning_Visitor" else 0,
+                0 if row["Weekend"] == "FALSE" else 1
             ])
-            labels.append(1 if row[17] == "TRUE" else 0)    # Revenue
+            labels.append(1 if row["Revenue"] == "TRUE" else 0)
 
     return (evidence, labels)
-
 
 
 def train_model(evidence, labels):
@@ -99,8 +98,7 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
-    
+    raise NotImplementedError 
 
 
 def evaluate(labels, predictions):
@@ -118,7 +116,7 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    raise NotImplementedError 
 
 
 if __name__ == "__main__":
