@@ -70,21 +70,21 @@ def load_data(filename):
         labels = []
         for row in reader:
             evidence.append([
-                row["Administrative"],
+                int(row["Administrative"]),
                 float(row["Administrative_Duration"]),
-                row["Informational"],
+                int(row["Informational"]),
                 float(row["Informational_Duration"]),
-                row["ProductRelated"],
+                int(row["ProductRelated"]),
                 float(row["ProductRelated_Duration"]),
                 float(row["BounceRates"]),
                 float(row["ExitRates"]),
                 float(row["PageValues"]),
                 float(row["SpecialDay"]),
-                month_num[row["Month"]],
-                row["OperatingSystems"],
-                row["Browser"],
-                row["Region"],
-                row["TrafficType"],
+                int(month_num[row["Month"]]),
+                int(row["OperatingSystems"]),
+                int(row["Browser"]),
+                int(row["Region"]),
+                int(row["TrafficType"]),
                 1 if row["VisitorType"] == "Returning_Visitor" else 0,
                 0 if row["Weekend"] == "FALSE" else 1
             ])
@@ -98,7 +98,7 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError 
+    raise NotImplementedError
 
 
 def evaluate(labels, predictions):
