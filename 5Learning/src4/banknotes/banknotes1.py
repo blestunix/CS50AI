@@ -9,7 +9,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 model = Perceptron()
 # model = svm.SVC()
-# model = KNeighborsClassifier(n_neighbors=1)
+#model = KNeighborsClassifier(n_neighbors=1)
 # model = GaussianNB()
 
 # Read data in from file
