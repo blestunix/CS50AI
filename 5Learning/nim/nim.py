@@ -138,7 +138,6 @@ class NimAI():
             best_reward = max(self.get_q_value(state, action), best_reward)
 
         return max(0, best_reward)
-        
 
     def choose_action(self, state, epsilon=True): 
         """ selects an action to take in a given state (either greedily, or using the epsilon-greedy algorithm)
@@ -155,7 +154,21 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+        # dictionary that stores available actions and ther corresponding values
+        actions = {action: self.get_q_value(state, action) for action in Nim.available_actions(state)}
+
+        # get the action with the highest value
+        best_action = max(actions, key=actions.get)
+
+        if not epsilon:
+            # use greedy algorithm
+            action = best_action
+        else:
+            # use ε-greedy algorithm
+            action = random.choices([best_action, random.choice(list(actions.keys()))], weights=[1 - self.epsilon, self.epsilon], k=1)[0]
+
+        return action
+
 def train(n):
     """
     Train an AI by playing `n` games against itself.
