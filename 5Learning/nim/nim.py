@@ -92,8 +92,11 @@ class NimAI():
         in that state, a new resulting state, and the reward received
         from taking that action.
         """
+        # Perform Q-learning by first getting the current Q-value for the state and action
         old = self.get_q_value(old_state, action)
+        # determining the best possible future rewards
         best_future = self.best_future_reward(new_state)
+        # update the Q-value using the above two values
         self.update_q_value(old_state, action, old, reward, best_future)
 
     def get_q_value(self, state, action):
@@ -132,8 +135,8 @@ class NimAI():
         """
         raise NotImplementedError
 
-    def choose_action(self, state, epsilon=True):
-        """
+    def choose_action(self, state, epsilon=True): 
+        """ selects an action to take in a given state (either greedily, or using the epsilon-greedy algorithm)
         Given a state `state`, return an action `(i, j)` to take.
 
         If `epsilon` is `False`, then return the best action
@@ -147,6 +150,7 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
+
         raise NotImplementedError
 
 
