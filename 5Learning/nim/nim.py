@@ -104,7 +104,7 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        raise NotImplementedError
+        return self.q[(tuple(state), action)] if (tuple(state), action) in self.q else 0
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
@@ -150,10 +150,7 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-
         raise NotImplementedError
-
-
 def train(n):
     """
     Train an AI by playing `n` games against itself.
