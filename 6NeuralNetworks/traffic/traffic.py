@@ -58,14 +58,19 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
+    images = [] # list of images represented as numpy.ndarray
+    labels = [] # list of the category number of the corresponding image (folder name i.e an int)
+
     for sub_dir in os.listdir(data_dir):
         curr_dir = os.path.join(data_dir, sub_dir)
         for img in os.listdir(curr_dir):
-            with open(os.path.join(curr_dir, img), "r") as image:
-                im = cv2.imread(image.name)
-                #print(type(im))
+            with open(os.path.join(curr_dir, img)) as image:
+                new_img = cv2.imread(image.name)
+                new_img = cv2.resize(new_img, dsize=(IMG_WIDTH, IMG_HEIGHT))
+                images.append(new_img)
+                labels.append(int(sub_dir))
     
-    raise NotImplementedError
+    return (images, labels)
 
 
 def get_model():
