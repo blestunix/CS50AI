@@ -58,6 +58,13 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
+    for sub_dir in os.listdir(data_dir):
+        curr_dir = os.path.join(data_dir, sub_dir)
+        for img in os.listdir(curr_dir):
+            with open(os.path.join(curr_dir, img), "r") as image:
+                im = cv2.imread(image.name)
+                #print(type(im))
+    
     raise NotImplementedError
 
 
