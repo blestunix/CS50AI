@@ -79,8 +79,20 @@ def get_model():
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
-    raise NotImplementedError
+    model = tf.keras.Sequential([
+        tf.keras.layers.Conv2D(
+            32, (3, 3), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
+        )
+    ])
 
+    # Train neural network
+    model.compile(
+        optimizer="adam",
+        loss="categorical_crossentropy",
+        metrics=["accuracy"]
+    )
+
+    return model
 
 if __name__ == "__main__":
     main()
