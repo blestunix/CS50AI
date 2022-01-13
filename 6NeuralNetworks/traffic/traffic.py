@@ -80,9 +80,14 @@ def get_model():
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     model = tf.keras.Sequential([
+
+        # Convolutional layer. Learn 32 filters using a 3x3 kernel
         tf.keras.layers.Conv2D(
             32, (3, 3), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
-        )
+        ),
+
+        # Add an output layer with output units for all the categories
+        tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
     ])
 
     # Train neural network
