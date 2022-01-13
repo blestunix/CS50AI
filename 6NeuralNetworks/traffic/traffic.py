@@ -86,6 +86,9 @@ def get_model():
             32, (3, 3), activation="relu", input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)
         ),
 
+        # Flatten the input
+        tf.keras.layers.Flatten(),
+
         # Add an output layer with output units for all the categories
         tf.keras.layers.Dense(NUM_CATEGORIES, activation="softmax")
     ])
