@@ -15,7 +15,7 @@ CKnave = Symbol("C is a Knave")
 # A says "I am both a knight and a knave."
 knowledge0 = And(
     # A can be either a Knight or a Knave; but not both
-    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)),  # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
 
     # A claims to be knight and knave both; so with a perpective that A is a Knight!; speaking the truth
     Biconditional(AKnight, And(AKnight, AKnave))    # AKnight <=> (AKnight ∧ AKnave)
@@ -26,12 +26,12 @@ knowledge0 = And(
 # B says nothing.
 knowledge1 = And(
     # A can be either a Knight or a Knave; but not both
-    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)),  # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
     # B can be either a Knight or a Knave; but not both
-    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)),  # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
 
     # A says that "I'm a knave and so is B"; so with a perspective that A is a knight; speaking the truth
-    Biconditional(AKnight, And(AKnave, BKnave)) # Anight <=> (AKnave ∧ BKnave)
+    Biconditional(AKnight, And(AKnave, BKnave))  # Anight <=> (AKnave ∧ BKnave)
 )
 
 # Puzzle 2
@@ -39,12 +39,12 @@ knowledge1 = And(
 # B says "We are of different kinds."
 knowledge2 = And(
     # A can be either a Knight or a Knave; but not both
-    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)),  # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
     # B can be either a Knight or a Knave; but not both
-    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)),  # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
 
     # A says "We are the same kind." So, with a perpective that A is a Knight; speaking the truth
-    Biconditional(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))), # AKnight <=> ((AKnight ∧ BKnight) ∨ (AKnave ∧ BKnave))
+    Biconditional(AKnight, Or(And(AKnight, BKnight), And(AKnave, BKnave))),  # AKnight <=> ((AKnight ∧ BKnight) ∨ (AKnave ∧ BKnave))
     # B says "We are of different kinds." So, with a perpective that B is a Knight; speaking the truth
     Biconditional(BKnight, Or(And(AKnight, BKnave), And(AKnave, BKnight)))  # BKnight <=> ((AKnight ∧ BKnave)) V (AKnave ∧ BKnight)
 )
@@ -56,11 +56,11 @@ knowledge2 = And(
 # C says "A is a knight."
 knowledge3 = And(
     # A can be either a Knight or a Knave; but not both
-    Or(AKnight, AKnave), Not(And(AKnight, AKnave)), # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
+    Or(AKnight, AKnave), Not(And(AKnight, AKnave)),  # (AKnight ∨ AKnave) ∧ ¬(AKnight ∧ AKnave)
     # B can be either a Knight or a Knave; but not both
-    Or(BKnight, BKnave), Not(And(BKnight, BKnave)), # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
+    Or(BKnight, BKnave), Not(And(BKnight, BKnave)),  # (BKnight ∨ BKnave) ∧ ¬(BKnight ∧ BKnave)
     # C can be either a Knight or a Knave; but not both
-    Or(CKnight, CKnave), Not(And(CKnight, CKnave)), # (CKnight ∨ CKnave) ∧ ¬(CKnight ∧ CKnave)
+    Or(CKnight, CKnave), Not(And(CKnight, CKnave)),  # (CKnight ∨ CKnave) ∧ ¬(CKnight ∧ CKnave)
 
     # A says either "I am a knight." or "I am a knave."; so pretending a is a night(is saying the truth)
     Biconditional(AKnight, Or(AKnight, AKnave)),

@@ -127,8 +127,7 @@ class Sentence():
             self.cells.remove(cell)
             self.count -= 1
         except KeyError:
-            pass # Do nothing
-
+            pass  # Do nothing
 
     def mark_safe(self, cell):
         """
@@ -139,7 +138,7 @@ class Sentence():
         try:
             self.cells.remove(cell)
         except KeyError:
-            pass # Do nothing
+            pass  # Do nothing
 
 
 class MinesweeperAI():
@@ -250,7 +249,7 @@ class MinesweeperAI():
                 if (i, j) not in self.moves_made and (i, j) not in self.mines:
                     available_moves.append((i, j))
         if len(available_moves) == 0:
-            return None # No moves available
+            return None  # No moves available
         return random.choice(available_moves)
 
     # All of the below are helper functions
