@@ -4,3 +4,5 @@ removing the dropout completely is not viable(obviously) and also decrease in dr
 time. I then tried adding multiple hidden layers, which gave an impressive accuracy for lower dropout values (94%);
 however the best outcome was one when I added a secondary Convolution and Pooling when it resulted an accuracy of 97%.
 Alas this outcome wasn't consistent; but on adding another hidden layer the output got quite stable.
+
+[Youtube video link](https://www.youtube.com/watch?v=V426_CUftcs)
