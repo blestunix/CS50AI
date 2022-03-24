@@ -17,7 +17,7 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> NP VP | S Conj S
+S -> NP VP | S Conj S | S Conj VP
 NP -> N | Det NP | NP PP | Adj NP
 VP -> V | VP NP | V PP | Adv VP |VP Adv
 PP -> P NP
@@ -79,6 +79,7 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
+    return []
     raise NotImplementedError
 
 
