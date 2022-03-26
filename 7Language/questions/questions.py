@@ -118,7 +118,18 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    raise NotImplementedError
+    scores = { sentence: 0 for sentence in sentences }
+    for sentence in sentences:
+        # sum of IDF values for any word in the query that also appears in the sentence
+        matching_word_measure = sum([idfs[word] for word in query.intersection(set(sentences[sentence]))])
+        # the proportion of words in the sentence that are also words in the query.
+        query_term_density = len(query.intersection(set(sentences[sentence]))) / len(sentences[sentence])
+        
+        scores[sentence] = (matching_word_measure, query_term_density)
+
+    rank = sorted(scores, key=scores.get, reverse=True)
+
+    return rank[:n]
 
 
 if __name__ == "__main__":
