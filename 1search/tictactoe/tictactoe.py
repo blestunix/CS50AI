@@ -3,6 +3,7 @@ Tic Tac Toe Player
 https://cs50.harvard.edu/ai/2020/projects/0/tictactoe/
 """
 
+from copy import deepcopy
 import math
 
 X = "X"
@@ -17,6 +18,7 @@ def initial_state():
     return [[EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY],
             [EMPTY, EMPTY, EMPTY]]
+
 
 def count(player, board):
     """
@@ -46,7 +48,7 @@ def actions(board):
                 possible.add((i, j))
     return possible
 
-from copy import deepcopy
+
 def result(board, action):
     """
     Returns the board that results from making move (i, j) on the board.
@@ -117,14 +119,16 @@ def minimax(board):
         ans = []
         for action in actions(board):
             ans.append((action, min_value(result(board, action), -math.inf, math.inf)))
-        return max(ans, key=lambda item:item[1])[0]
+        return max(ans, key=lambda item: item[1])[0]
     else:                       # MINIMIZE
         ans = []
         for action in actions(board):
             ans.append((action, max_value(result(board, action), -math.inf, math.inf)))
-        return min(ans, key=lambda item:item[1])[0]
+        return min(ans, key=lambda item: item[1])[0]
 
 # alpha: max & beta: min
+
+
 def max_value(board, alpha, beta):
     #   function MAX-VALUE(state):
     #       if TERMINAL(state):
@@ -143,6 +147,7 @@ def max_value(board, alpha, beta):
         if alpha >= beta:
             break
     return v
+
 
 def min_value(board, alpha, beta):
     #   function MAX-VALUE(state):

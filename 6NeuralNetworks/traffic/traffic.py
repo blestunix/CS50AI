@@ -58,8 +58,8 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    images = [] # list of images represented as numpy.ndarray
-    labels = [] # list of the category number of the corresponding image (folder name i.e an int)
+    images = []  # list of images represented as numpy.ndarray
+    labels = []  # list of the category number of the corresponding image (folder name i.e an int)
 
     for sub_dir in os.listdir(data_dir):
         curr_dir = os.path.join(data_dir, sub_dir)
@@ -119,6 +119,7 @@ def get_model():
     )
 
     return model
+
 
 if __name__ == "__main__":
     main()

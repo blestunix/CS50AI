@@ -42,8 +42,8 @@ class Crossword():  # to represent the puzzle itself
         # Determine structure of crossword
         with open(structure_file) as f:
             contents = f.read().splitlines()
-            self.height = len(contents) # is an integer representing the height of the crossword puzzle.
-            self.width = max(len(line) for line in contents) #  is an integer representing the width of the crossword puzzle.
+            self.height = len(contents)  # is an integer representing the height of the crossword puzzle.
+            self.width = max(len(line) for line in contents)  # is an integer representing the width of the crossword puzzle.
 
             # a 2D list representing the structure of the puzzle. For any valid row i and column j,
             # crossword.structure[i][j] will be True if the cell is blank (a character must be filled
@@ -62,7 +62,8 @@ class Crossword():  # to represent the puzzle itself
 
         # Save vocabulary list
         with open(words_file) as f:
-            self.words = set(f.read().upper().splitlines()) # a set of all of the words to draw from when constructing the crossword puzzle.
+            # a set of all of the words to draw from when constructing the crossword puzzle.
+            self.words = set(f.read().upper().splitlines())
 
         # Determine variable set
         self.variables = set()  # is a set of all of the variables in the puzzle (each is a Variable object).

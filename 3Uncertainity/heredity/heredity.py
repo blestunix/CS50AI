@@ -150,7 +150,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         
     """
     # Probability of `person` haven 2, 1 or 0 genes
-    gene_count = lambda person: 1 if  person in one_gene else 2 if person in two_genes else 0
+    gene_count = lambda person: 1 if person in one_gene else 2 if person in two_genes else 0
 
     # return the passing probability
     #  Gene count(`val`)    |     Passing probability       
@@ -206,8 +206,8 @@ def update(probabilities, one_gene, two_genes, have_trait, p):
         - `have_trait` is a set of people with the trait in the current joint distribution.
         - `p` is the probability of the joint distribution.
     """
-     # Probability of `person` haven 2, 1 or 0 genes
-    gene_count = lambda person: 1 if  person in one_gene else 2 if person in two_genes else 0
+    # Probability of `person` haven 2, 1 or 0 genes
+    gene_count = lambda person: 1 if person in one_gene else 2 if person in two_genes else 0
 
     for person in probabilities:
         # update the probabilities[person]["gene"] distribution by adding p to the corresponding gene

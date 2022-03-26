@@ -58,8 +58,9 @@ def load_files(directory):
     files = {}
     for filename in os.listdir(directory):
         with open(os.path.join(directory, filename)) as f:
-            files[f.name[len(directory) + 1:]] =  f.read()
+            files[f.name[len(directory) + 1:]] = f.read()
     return files
+
 
 def tokenize(document):
     """
@@ -73,9 +74,9 @@ def tokenize(document):
     punctuation = set(string.punctuation)
     
     return ([word
-        for word in nltk.word_tokenize(document.lower())
-        if word not in stopwords and not set(word).issubset(punctuation)
-    ])
+             for word in nltk.word_tokenize(document.lower())
+             if word not in stopwords and not set(word).issubset(punctuation)
+             ])
 
 def compute_idfs(documents):
     """
@@ -93,9 +94,10 @@ def compute_idfs(documents):
             counts[word] += 1
     
     # formula: idf[word] = ln(no_of_doucments / no_of_doucuments_in_which_the_word_appeared)
-    idfs = { word: math.log(len(documents) / counts[word]) for word in words }
+    idfs = {word: math.log(len(documents) / counts[word]) for word in words}
 
     return idfs
+
     
 def top_files(query, files, idfs, n):
     """
@@ -115,6 +117,7 @@ def top_files(query, files, idfs, n):
     rank = sorted(tfidfs, key=tfidfs.get, reverse=True)
     return rank[:n]
 
+
 def top_sentences(query, sentences, idfs, n):
     """
     Given a `query` (a set of words), `sentences` (a dictionary mapping
@@ -123,7 +126,7 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    scores = { sentence: 0 for sentence in sentences }
+    scores = {sentence: 0 for sentence in sentences}
     for sentence in sentences:
         # sum of IDF values for any word in the query that also appears in the sentence
         matching_word_measure = sum([idfs[word] for word in query.intersection(set(sentences[sentence]))])

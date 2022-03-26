@@ -4,7 +4,7 @@ import re
 import sys
 
 DAMPING = 0.85  # represents the damping factor(d); set to initially to 0.85
-SAMPLES = 10000 # represents the number of samples used to estimate PageRank using the sampling method; set initially to 10000
+SAMPLES = 10000  # represents the number of samples used to estimate PageRank using the sampling method; set initially to 10000
 
 
 def main():
@@ -76,12 +76,12 @@ def transition_model(corpus, page, damping_factor):
     probability = dict()
     # In case if the page has links to no other pages
     if corpus[page] is None:
-        for current_page in corpus: # iterate over all the keys in the corpus dictionary
+        for current_page in corpus:  # iterate over all the keys in the corpus dictionary
             probability[current_page] = 1 / len(corpus[page])
         return probability
 
     # Else if the page is pointing to other pages
-    for current_page in corpus: # iterate over all the keys in the corpus dictionary
+    for current_page in corpus:  # iterate over all the keys in the corpus dictionary
 
         # Every page will have some change which is given by: (1 - damping_factor) / len(corpus)
         # trying to overcome the issues aand limitations of floating-point arithmetic; by using integer arithmetic instead
@@ -110,21 +110,23 @@ def sample_pagerank(corpus, damping_factor, n):
         - The `damping_factor` is a floating point number representing the damping factor to be used by the transition model.
         - `n` is an integer representing the number of samples that should be generated to estimate PageRank values. (n >= 1)
     """
-    pagerank = {page: 0 for page in corpus} # dictionary to store the estimated pagerank of each page
-    sample = random.choice(list(corpus.keys())) # first page
+    pagerank = {page: 0 for page in corpus}  # dictionary to store the estimated pagerank of each page
+    sample = random.choice(list(corpus.keys()))  # first page
 
     for _ in range(n):
         pagerank[sample] += 1
         model = transition_model(corpus, sample, damping_factor)
         # random.choices() has an argument- `weight` which will infulence the outcome based on the value(higher get more chances)
         # random.choices returns list of length equal to the length of the given sequence; so we define k=1 to get only one item
-        sample = random.choices(list(model.keys()), weights=list(model.values()), k=1)[0]   # We get a list of unit length so to get the item only use 0 index
+        # We get a list of unit length so to get the item only use 0 index
+        sample = random.choices(list(model.keys()), weights=list(model.values()), k=1)[0]
 
     for page in pagerank:
         pagerank[page] /= n
 
     # Check: print(sum(pagerank.values()))
     return pagerank
+    
 
 def iterate_pagerank(corpus, damping_factor):
     """

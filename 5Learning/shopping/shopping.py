@@ -65,7 +65,7 @@ def load_data(filename):
         next(reader)
 
         month_num = {"Jan": 0, "Feb": 1, "Mar": 2, "Apr": 3, "May": 4, "June": 5, 
-                    "Jul": 6, "Aug": 7, "Sep": 8 , "Oct": 9, "Nov": 10, "Dec": 11}
+                     "Jul": 6, "Aug": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Dec": 11}
 
         evidence = []
         labels = []
@@ -133,7 +133,7 @@ def evaluate(labels, predictions):
             if prediction == label:
                 sensitivity += 1
     
-        else: # label's value is 0
+        else:  # label's value is 0
             negatives += 1
             if prediction == label:
                 specificity += 1
@@ -142,6 +142,7 @@ def evaluate(labels, predictions):
     specificity /= negatives
 
     return (sensitivity, specificity)
+
 
 if __name__ == "__main__":
     main()

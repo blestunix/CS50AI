@@ -165,9 +165,11 @@ class NimAI():
             action = best_action
         else:
             # use ε-greedy algorithm
-            action = random.choices([best_action, random.choice(list(actions.keys()))], weights=[1 - self.epsilon, self.epsilon], k=1)[0]
+            action = random.choices([best_action, random.choice(list(actions.keys()))], 
+                                    weights=[1 - self.epsilon, self.epsilon], k=1)[0]
 
         return action
+        
 
 def train(n):
     """

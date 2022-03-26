@@ -1,6 +1,6 @@
 import sys
 
-from crossword import * # Variable, Crossword
+from crossword import *  # Variable, Crossword
 
 
 class CrosswordCreator():
@@ -135,7 +135,7 @@ class CrosswordCreator():
         """
         # there exists an arc between a variable and it's neighboring variables
         queue = arcs if arcs is not None else [(x, y) for x in self.crossword.variables for y in self.crossword.neighbors(x)]
-        #print(queue)
+
         while queue:
             (x, y) = queue.pop(0)
             if self.revise(x, y):
@@ -207,8 +207,8 @@ class CrosswordCreator():
         # Get the variable with the fewest number of remaining values in its domain.    
         # On tie, choosing among those variables having the largest degree (has the most neighbors)
         fewest = min(unassigned_vars.items(),       # sort the unassigned_vars dictionary
-                key=lambda item: len(item[1]) and not  # based on lesser domain length
-                                 len(self.crossword.neighbors(item[0]))) # and higher no of neighbors
+                     key=lambda item: len(item[1]) and not  # based on lesser domain length
+                     len(self.crossword.neighbors(item[0])))  # and higher no of neighbors
         return fewest[0]
  
     def backtrack(self, assignment):
@@ -236,10 +236,10 @@ class CrosswordCreator():
                     if len(self.domains[unassigned_var]) == 1:
                         new_assignment[unassigned_var] = self.domains[unassigned_var][0]
                 result = self.backtrack(new_assignment)
-                if result is not None: # Not a failure
+                if result is not None:  # Not a failure
                     return result
     
-        return None # Every values was tried on; yet nothing worked; i.e. no solution
+        return None  # Every values was tried on; yet nothing worked; i.e. no solution
 
 
 def main():
