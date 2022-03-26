@@ -1,6 +1,7 @@
 import nltk
 import sys
 import os
+import string
 
 FILE_MATCHES = 1
 SENTENCE_MATCHES = 1
@@ -63,8 +64,13 @@ def tokenize(document):
     Process document by coverting all words to lowercase, and removing any
     punctuation or English stopwords.
     """
-    raise NotImplementedError
-
+    stopwords = nltk.corpus.stopwords.words("english")
+    punctuation = set(string.punctuation)
+    
+    return ([word
+        for word in nltk.word_tokenize(document.lower())
+        if word not in stopwords and not set(word).issubset(punctuation)
+    ])
 
 def compute_idfs(documents):
     """
