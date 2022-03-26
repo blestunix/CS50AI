@@ -91,7 +91,7 @@ def compute_idfs(documents):
     idfs = { word: math.log(len(documents) / counts[word]) for word in words }
 
     return idfs
-
+    
 def top_files(query, files, idfs, n):
     """
     Given a `query` (a set of words), `files` (a dictionary mapping names of
@@ -103,11 +103,11 @@ def top_files(query, files, idfs, n):
 
     for filename in files:
         tfidfs[filename] = 0
-        for word in query:
+        for word in query.intersection(set(files[filename])):
             tf = files[filename].count(word)
             tfidfs[filename] += tf * idfs[word]
     
-    rank = sorted(tfidfs, key=tfidfs.get, reverse = True)
+    rank = sorted(tfidfs, key=tfidfs.get, reverse=True)
     return rank[:n]
 
 def top_sentences(query, sentences, idfs, n):
