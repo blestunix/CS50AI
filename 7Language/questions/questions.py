@@ -6,6 +6,8 @@ import os
 import string
 import math
 
+from prometheus_client import Counter
+
 FILE_MATCHES = 1
 SENTENCE_MATCHES = 1
 
@@ -85,8 +87,11 @@ def compute_idfs(documents):
     """
     words = set(sum(documents.values(), []))
     counts = defaultdict(int)
-    counts = { word: counts[word] + 1 for f in documents for word in documents[f] }
 
+    for doc in documents:
+        for word in set(documents[doc]): 
+            counts[word] += 1
+    
     # formula: idf[word] = ln(no_of_doucments / no_of_doucuments_in_which_the_word_appeared)
     idfs = { word: math.log(len(documents) / counts[word]) for word in words }
 
