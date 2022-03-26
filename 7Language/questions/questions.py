@@ -1,4 +1,5 @@
 from collections import defaultdict
+from matplotlib.pyplot import get
 import nltk
 import sys
 import os
@@ -91,7 +92,6 @@ def compute_idfs(documents):
 
     return idfs
 
-
 def top_files(query, files, idfs, n):
     """
     Given a `query` (a set of words), `files` (a dictionary mapping names of
@@ -99,8 +99,16 @@ def top_files(query, files, idfs, n):
     to their IDF values), return a list of the filenames of the the `n` top
     files that match the query, ranked according to tf-idf.
     """
-    raise NotImplementedError
+    tfidfs = dict()
 
+    for filename in files:
+        tfidfs[filename] = 0
+        for word in query:
+            tf = files[filename].count(word)
+            tfidfs[filename] += tf * idfs[word]
+    
+    rank = sorted(tfidfs, key=tfidfs.get, reverse = True)
+    return rank[:n]
 
 def top_sentences(query, sentences, idfs, n):
     """
